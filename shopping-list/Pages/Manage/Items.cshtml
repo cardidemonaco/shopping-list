@@ -1,0 +1,24 @@
+﻿@page
+@model shopping_list.WebApp.Pages.Manage.ItemsModel
+@{
+    ViewData["Title"] = "Items";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@using shopping_list.DataLayer;
+
+<h2>Items</h2>
+
+<table>
+    <tr>
+        <th>Delete?</th>
+        <th>Item Name</th>
+    </tr>
+    @foreach (Item i in Model._ic.GetItems())
+    {
+        <tr>
+            <td></td>
+            <td>@i.ItemName</td>
+        </tr>
+    }
+</table>
