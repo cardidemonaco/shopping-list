@@ -38,6 +38,10 @@ namespace shopping_list
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            shopping_list.DataLayer.Shopping_listDataContext context = new DataLayer.Shopping_listDataContext();
+            //context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
