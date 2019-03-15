@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace shopping_list.DataLayer
 {
-    public class Location
+    public class Brand
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int LocationId { get; set; }
-        public string LocationName { get; set; }
+        public int BrandId { get; set; }
+        public string BrandName { get; set; }
     }
 }
