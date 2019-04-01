@@ -1,5 +1,5 @@
 ﻿@page
-@model shopping_list.WebApp.Pages.Manage.ItemsModel
+@model shopping_list.DataLayer.Controllers.ItemController
 @{
     ViewData["Title"] = "Items";
     Layout = "~/Pages/Shared/_Layout.cshtml";
@@ -14,7 +14,7 @@
         <th>Delete?</th>
         <th>Item Name</th>
     </tr>
-    @foreach (Item i in Model._ic.GetItems())
+    @foreach (Item i in DataLayer.Controllers.ItemController.GetItems())
     {
         <tr>
             <td></td>
@@ -22,3 +22,8 @@
         </tr>
     }
 </table>
+
+<form method="post" asp-page-handler="Insert">
+    <input type="text" name="ItemName" />
+    <input type="submit" value="Submit New Item" />
+</form>

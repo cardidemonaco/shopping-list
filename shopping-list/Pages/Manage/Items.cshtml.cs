@@ -12,18 +12,22 @@ namespace shopping_list.WebApp.Pages.Manage
 {
     public class ItemsModel : PageModel
     {
-        private Shopping_listDataContext _sl = new Shopping_listDataContext();
-        public ItemController _ic = new ItemController();
+        //private Shopping_listDataContext _sl = new Shopping_listDataContext();
+        //public ItemController _ic = new ItemController();
 
 
         public void OnGet()
         {
-            var itemBrands = _sl.Items.Join(_sl.ItemBrand,
-                                    i => i.ItemId,
-                                    ib => ib.ItemId,
-                                    (i, ib) => new { i, ib });
+            //var itemBrands = _sl.Items.Join(_sl.ItemBrand,
+            //                        i => i.ItemId,
+            //                        ib => ib.ItemId,
+            //                        (i, ib) => new { i, ib });
 
-
+            //foreach (var item in itemBrands)
+            //{
+                
+            //}
+            
         }
     }
 }
