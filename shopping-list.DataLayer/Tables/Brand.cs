@@ -10,5 +10,7 @@ namespace shopping_list.DataLayer
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BrandId { get; set; }
         public string BrandName { get; set; }
+        public string BrandWebsite { get; set; }
+        public string BrandNotes { get; set; }
     }
 }

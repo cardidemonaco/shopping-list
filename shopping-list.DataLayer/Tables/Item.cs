@@ -8,7 +8,10 @@ namespace shopping_list.DataLayer
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public int ItemId { get; set; }
+        [Required]
         public string ItemName { get; set; }
+        public string ItemDescription { get; set; }
     }
 }

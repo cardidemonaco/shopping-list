@@ -36,3 +36,12 @@ body {
         display: none;
     }
 }
+
+table 
+{
+    border: 1px solid black;
+}
+table tr th, table tr td {
+    border: 1px solid black;
+    padding: 4px;
+}

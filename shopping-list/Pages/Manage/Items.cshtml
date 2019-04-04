@@ -7,23 +7,43 @@
 
 @using shopping_list.DataLayer;
 
-<h2>Items</h2>
+<h2>Goods and Services</h2>
 
-<table>
+<table cellpadding="4" cellspacing="4">
     <tr>
         <th>Delete?</th>
-        <th>Item Name</th>
+        <th>Good or Service Name</th>
+        <th>Description</th>
     </tr>
-    @foreach (Item i in DataLayer.Controllers.ItemController.GetItems())
+    @foreach (Item i in DataLayer.Controllers.ItemController.GetItems().OrderBy(x => x.ItemName))
     {
         <tr>
-            <td></td>
+            <td style="text-align: center;">
+                <form method="post" asp-page-handler="Delete">
+                    <input type="hidden" name="ItemID" value="@i.ItemId" />
+                    <input type="submit" value="X" tooltip="Delete Good or Service" />
+                </form>
+            </td>
             <td>@i.ItemName</td>
+            <td>@i.ItemDescription</td>
         </tr>
     }
 </table>
 
+<br />
+
 <form method="post" asp-page-handler="Insert">
-    <input type="text" name="ItemName" />
-    <input type="submit" value="Submit New Item" />
+    <table>
+        <tr>
+            <td>Name</td>
+            <td><input type="text" name="ItemName" /></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><textarea name="ItemDescription" rows="5"></textarea></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Submit New Good or Service" /></td>
+        </tr>
+    </table>
 </form>

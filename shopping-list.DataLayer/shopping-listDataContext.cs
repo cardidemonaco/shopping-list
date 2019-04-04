@@ -5,6 +5,10 @@ namespace shopping_list.DataLayer
 {
     public class Shopping_listDataContext : DbContext
     {
+        /// <summary>
+        /// To migrate, use "Add-Migration [Name]" in Package Manager Console, after making EF changes
+        /// </summary>
+        /// <param name="options"></param>
         public Shopping_listDataContext(DbContextOptions<Shopping_listDataContext> options)
             : base(options)
         {

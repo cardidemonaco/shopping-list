@@ -18,7 +18,25 @@ namespace shopping_list.DataLayer.Controllers
         {
             using (Shopping_listDataContext _sl = new Shopping_listDataContext())
             {
-                _sl.Items.Add(new Item { ItemName = item.ItemName });
+                _sl.Items.Add(new Item { ItemName = item.ItemName, ItemDescription = item.ItemDescription });
+                _sl.SaveChanges();
+            }
+        }
+
+        public void OnPostUpdate(Item item)
+        {
+            using (Shopping_listDataContext _sl = new Shopping_listDataContext())
+            {
+                _sl.Items.Update(item);
+                _sl.SaveChanges();
+            }
+        }
+
+        public void OnPostDelete(Item item)
+        {
+            using (Shopping_listDataContext _sl = new Shopping_listDataContext())
+            {
+                _sl.Items.Remove(item);
                 _sl.SaveChanges();
             }
         }
