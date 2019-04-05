@@ -1,0 +1,19 @@
+﻿@page "{id:int}"
+@model shopping_list.WebApp.Pages.Manage.ItemEditModel
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<form method="post">
+    <table>
+        <tr>
+            <td><input asp-for="Item.ItemName" /></td>
+            <td><input asp-for="Item.ItemDescription" /></td>
+            <td><button type="submit"></button></td>
+        </tr>
+    </table>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

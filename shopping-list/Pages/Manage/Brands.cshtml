@@ -1,0 +1,55 @@
+﻿@page
+@model shopping_list.DataLayer.Controllers.BrandController
+@{
+    ViewData["Title"] = "Brands";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@using shopping_list.DataLayer;
+
+<h2>Brands</h2>
+
+<table cellpadding="4" cellspacing="4">
+    <tr>
+        <th>Delete?</th>
+        <th>Brand Name</th>
+        <th>Description</th>
+        <th>Website</th>
+    </tr>
+    @foreach (Brand b in DataLayer.Controllers.BrandController.GetBrands().OrderBy(x => x.BrandName))
+    {
+        <tr>
+            <td style="text-align: center;">
+                <form method="post" asp-page-handler="Delete">
+                    <input type="hidden" name="BrandID" value="@b.BrandId" />
+                    <input type="submit" value="X" tooltip="Delete Brand" />
+                </form>
+            </td>
+            <td>@b.BrandName</td>
+            <td>@b.BrandNotes</td>
+            <td><a target="_blank" href="@b.BrandWebsite">@b.BrandWebsite</a></td>
+        </tr>
+    }
+</table>
+
+<br />
+
+<form method="post" asp-page-handler="Insert">
+    <table>
+        <tr>
+            <td>Name</td>
+            <td><input type="text" name="BrandName" /></td>
+        </tr>
+        <tr>
+            <td>Notes</td>
+            <td><textarea name="BrandNotes" rows="5"></textarea></td>
+        </tr>
+        <tr>
+            <td>Website</td>
+            <td><input type="text" name="BrandWebsite" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Submit New Brand" /></td>
+        </tr>
+    </table>
+</form>

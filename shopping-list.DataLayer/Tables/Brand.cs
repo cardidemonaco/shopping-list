@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace shopping_list.DataLayer
 {
@@ -8,7 +7,9 @@ namespace shopping_list.DataLayer
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public int BrandId { get; set; }
+        [Required]
         public string BrandName { get; set; }
         public string BrandWebsite { get; set; }
         public string BrandNotes { get; set; }

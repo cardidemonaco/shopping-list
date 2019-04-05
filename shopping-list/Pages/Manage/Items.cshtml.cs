@@ -1,33 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using shopping_list.DataLayer;
-using shopping_list.DataLayer.Controllers;
 
 namespace shopping_list.WebApp.Pages.Manage
 {
     public class ItemsModel : PageModel
     {
-        //private Shopping_listDataContext _sl = new Shopping_listDataContext();
-        //public ItemController _ic = new ItemController();
+        private Shopping_listDataContext _sl = new Shopping_listDataContext();
 
+        public IQueryable<Item> GetItems()
+        {
+            return _sl.Items;
+        }
 
         public void OnGet()
         {
-            //var itemBrands = _sl.Items.Join(_sl.ItemBrand,
-            //                        i => i.ItemId,
-            //                        ib => ib.ItemId,
-            //                        (i, ib) => new { i, ib });
 
-            //foreach (var item in itemBrands)
-            //{
-                
-            //}
-            
+        }
+
+        public void OnPostInsert(Item item)
+        {
+            _sl.Items.Add(new Item { ItemName = item.ItemName, ItemDescription = item.ItemDescription });
+            _sl.SaveChanges();
+        }
+
+        public void OnPostUpdate(Item item)
+        {
+            _sl.Items.Update(item);
+            _sl.SaveChanges();
+        }
+
+        public void OnPostDelete(int id)
+        {
+            var item = _sl.Items.Find(id);
+            _sl.Items.Remove(item);
+            _sl.SaveChanges();
         }
     }
 }

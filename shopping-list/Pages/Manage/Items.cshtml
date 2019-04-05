@@ -1,5 +1,7 @@
-﻿@page
-@model shopping_list.DataLayer.Controllers.ItemController
+﻿@page "{handler?}/{id:int?}"
+
+@model shopping_list.WebApp.Pages.Manage.ItemsModel
+
 @{
     ViewData["Title"] = "Items";
     Layout = "~/Pages/Shared/_Layout.cshtml";
@@ -9,26 +11,30 @@
 
 <h2>Goods and Services</h2>
 
-<table cellpadding="4" cellspacing="4">
-    <tr>
-        <th>Delete?</th>
-        <th>Good or Service Name</th>
-        <th>Description</th>
-    </tr>
-    @foreach (Item i in DataLayer.Controllers.ItemController.GetItems().OrderBy(x => x.ItemName))
-    {
+
+<form method="post">
+    <table cellpadding="4" cellspacing="4">
         <tr>
-            <td style="text-align: center;">
-                <form method="post" asp-page-handler="Delete">
-                    <input type="hidden" name="ItemID" value="@i.ItemId" />
-                    <input type="submit" value="X" tooltip="Delete Good or Service" />
-                </form>
-            </td>
-            <td>@i.ItemName</td>
-            <td>@i.ItemDescription</td>
+            <th>Delete?</th>
+            <th>Edit?</th>
+            <th>Good or Service Name</th>
+            <th>Description</th>
         </tr>
-    }
-</table>
+        @foreach (Item i in Model.GetItems().OrderBy(x => x.ItemName))
+        {
+            <tr>
+                <td style="text-align: center;">
+                    <button type="submit" asp-page-handler="delete" asp-route-id="@i.ItemId">X</button>
+                </td>
+                <td style="text-align: center;">
+                    <button type="submit" asp-page="./ItemEdit" asp-route-id="@i.ItemId">X</button>
+                </td>
+                <td>@i.ItemName</td>
+                <td>@i.ItemDescription</td>
+            </tr>
+        }
+    </table>
+</form>
 
 <br />
 
