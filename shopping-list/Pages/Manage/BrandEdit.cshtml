@@ -1,0 +1,29 @@
+﻿@page "{id:int}"
+@model shopping_list.WebApp.Pages.Manage.BrandEditModel
+
+<form method="post">
+    <h2>Edit Good or Service</h2>
+    <table>
+        <tr>
+            <td>Name</td>
+            <td><input asp-for="Brand.BrandName" /></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><textarea rows="5" asp-for="Brand.BrandNotes"></textarea></td>
+        </tr>
+        <tr>
+            <td>Website</td>
+            <td><input asp-for="Brand.BrandWebsite" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit" asp-page-handler="update" asp-route-id="@Model.Brand.BrandId">Update Brand</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
