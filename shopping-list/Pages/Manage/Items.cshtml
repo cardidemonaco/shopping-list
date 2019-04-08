@@ -11,6 +11,11 @@
 
 <h2>Goods and Services</h2>
 
+@if (Model.Message != "")
+{
+    string fontColor = @Model.Success ? "green" : "red";
+    <p style="color: @fontColor;">@Model.Message</p>
+}
 
 <form method="post">
     <table cellpadding="4" cellspacing="4">
@@ -27,7 +32,7 @@
                     <button type="submit" asp-page-handler="delete" asp-route-id="@i.ItemId">X</button>
                 </td>
                 <td style="text-align: center;">
-                    <button type="submit" asp-page="./ItemEdit" asp-route-id="@i.ItemId">X</button>
+                    <button type="submit" asp-page-handler="edit" asp-page="./ItemEdit" asp-route-id="@i.ItemId">*</button>
                 </td>
                 <td>@i.ItemName</td>
                 <td>@i.ItemDescription</td>

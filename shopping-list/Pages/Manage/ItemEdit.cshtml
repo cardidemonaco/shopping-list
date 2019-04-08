@@ -5,11 +5,18 @@
 *@
 
 <form method="post">
+    <h2>Edit Good or Service</h2>
     <table>
         <tr>
+            <td>Name</td>
             <td><input asp-for="Item.ItemName" /></td>
+        </tr>
+        <tr>
+            <td>Description</td>
             <td><input asp-for="Item.ItemDescription" /></td>
-            <td><button type="submit"></button></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button type="submit" asp-page-handler="update" asp-route-id="@Model.Item.ItemId">Update Good or Service</button></td>
         </tr>
     </table>
 </form>

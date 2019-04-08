@@ -14,6 +14,12 @@ namespace shopping_list.WebApp.Pages.Manage
     {
         private Shopping_listDataContext _sl = new Shopping_listDataContext();
 
+        [TempData]
+        public string Message { get; set; }
+
+        [TempData]
+        public bool Success { get; set; }
+
         public IQueryable<Item> GetItems()
         {
             return _sl.Items;
