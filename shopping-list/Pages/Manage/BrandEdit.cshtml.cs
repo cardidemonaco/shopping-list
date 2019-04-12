@@ -28,6 +28,21 @@ namespace shopping_list.WebApp.Pages.Manage
             return _sl.Brand;
         }
 
+        public IQueryable<Item> GetItems()
+        {
+            return _sl.Items;
+        }
+
+        public IQueryable<ItemBrand> GetItemBrands(int BrandId)
+        {
+            return _sl.ItemBrand.Where(x => x.BrandId == BrandId);
+        }
+
+        public Item GetItem(int ItemId)
+        {
+            return _sl.Items.Where(x => x.ItemId == ItemId).SingleOrDefault();
+        }
+
         public void OnGet()
         {
 
@@ -38,13 +53,26 @@ namespace shopping_list.WebApp.Pages.Manage
             Brand = _sl.Brand.Find(id);
         }
 
-        public IActionResult OnPostUpdate(int id)
+        public IActionResult OnPostUpdate(int id, string[] Items)
         {
             try
             {
                 Brand.BrandId = id; //Set the primary key
                 _sl.Brand.Update(Brand); //The rest of the new values are automatically bound
                 _sl.SaveChanges(); //Update the database
+
+                //Delete all items first, and then just below add them again...
+                _sl.ItemBrand.RemoveRange(_sl.ItemBrand.Where(x => x.BrandId == Brand.BrandId));
+
+                //Save each Good or Service the Brand offers...
+                foreach (string item in Items)
+                {
+                    //Check first if the item exists, and if not add, it...
+                    _sl.ItemBrand.Add(new ItemBrand { BrandId = Brand.BrandId, ItemId = Convert.ToInt32(item) });
+                }
+
+                //Persist to database
+                _sl.SaveChanges();
 
                 Message = "Good or Service update successful"; //Alert the user
                 Success = true;

@@ -1,6 +1,8 @@
 ﻿@page "{id:int}"
 @model shopping_list.WebApp.Pages.Manage.BrandEditModel
 
+@using shopping_list.DataLayer;
+
 <form method="post">
     <h2>Edit Good or Service</h2>
     <table>
@@ -15,6 +17,24 @@
         <tr>
             <td>Website</td>
             <td><input asp-for="Brand.BrandWebsite" /></td>
+        </tr>
+        <tr>
+            <td>Offers</td>
+            <td>
+                <select name="Items" multiple size="10">
+                    @foreach (Item i in Model.GetItems().OrderBy(x => x.ItemName))
+                    {
+                        @if (Model.GetItemBrands(Model.Brand.BrandId).Where(x => x.ItemId == i.ItemId).Count() > 0)
+                        {
+                            <option name="ItemId" selected value="@i.ItemId">@i.ItemName</option>
+                        }
+                        else
+                        {
+                            <option name="ItemId" value="@i.ItemId">@i.ItemName</option>
+                        }
+                    }
+                </select>
+            </td>
         </tr>
         <tr>
             <td colspan="2">

@@ -22,21 +22,33 @@
             <th>Edit?</th>
             <th>Brand Name</th>
             <th>Description</th>
+            <th>Offers</th>
             <th>Website</th>
         </tr>
         @foreach (Brand b in @Model.GetBrands().OrderBy(x => x.BrandName))
         {
-            <tr>
-                <td style="text-align: center;">
-                    <button type="submit" asp-page-handler="delete" asp-route-id="@b.BrandId">X</button>
-                </td>
-                <td style="text-align: center;">
-                    <button type="submit" asp-page-handler="edit" asp-page="./BrandEdit" asp-route-id="@b.BrandId">*</button>
-                </td>
-                <td>@b.BrandName</td>
-                <td>@b.BrandNotes</td>
-                <td><a target="_blank" href="@b.BrandWebsite">@b.BrandWebsite</a></td>
-            </tr>
+        <tr>
+            <td style="text-align: center;">
+                <button type="submit" asp-page-handler="delete" asp-route-id="@b.BrandId">X</button>
+            </td>
+            <td style="text-align: center;">
+                <button type="submit" asp-page-handler="edit" asp-page="./BrandEdit" asp-route-id="@b.BrandId">*</button>
+            </td>
+            <td>@b.BrandName</td>
+            <td>@b.BrandNotes</td>
+            <td>
+                @if (Model.GetItemBrands(b.BrandId).Count() > 0)
+                {
+                    <select name="Items" multiple style="width: 100%;">
+                        @foreach (ItemBrand itemBrand in Model.GetItemBrands(b.BrandId).OrderBy(x => x.Item.ItemName))
+                        {
+                            <option name="ItemId" value="@itemBrand.ItemId">@Model.GetItem(itemBrand.ItemId).ItemName</option>
+                        }
+                    </select>
+                }                
+            </td>
+            <td><a target="_blank" href="@b.BrandWebsite">@b.BrandWebsite</a></td>
+        </tr>
         }
     </table>
 </form>
@@ -45,6 +57,9 @@
 
 <form method="post" asp-page-handler="Insert">
     <table>
+        <tr>
+            <th colspan="2">New Brand</th>
+        </tr>
         <tr>
             <td>Name</td>
             <td><input type="text" name="BrandName" /></td>
@@ -56,6 +71,17 @@
         <tr>
             <td>Website</td>
             <td><input type="text" name="BrandWebsite" /></td>
+        </tr>
+        <tr>
+            <td>Offers</td>
+            <td>
+                <select name="Items" multiple size="10">
+                    @foreach (Item i in Model.GetItems().OrderBy(x => x.ItemName))
+                    {
+                        <option name="ItemId" value="@i.ItemId">@i.ItemName</option>
+                    }
+                </select>
+            </td>
         </tr>
         <tr>
             <td colspan="2"><input type="submit" value="Submit New Brand" /></td>

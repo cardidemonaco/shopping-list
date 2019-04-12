@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace shopping_list.DataLayer
@@ -13,5 +14,6 @@ namespace shopping_list.DataLayer
         public string BrandName { get; set; }
         public string BrandWebsite { get; set; }
         public string BrandNotes { get; set; }
+        public ICollection<ItemBrand> ItemBrands { get; set; }
     }
 }

@@ -24,15 +24,41 @@ namespace shopping_list.WebApp.Pages.Manage
             return _sl.Brand;
         }
 
+        public IQueryable<Item> GetItems()
+        {
+            return _sl.Items;
+        }
+
+        public IQueryable<ItemBrand> GetItemBrands(int BrandId)
+        {
+            return _sl.ItemBrand.Where(x => x.BrandId == BrandId);
+        }
+
+        public Item GetItem(int ItemId)
+        {
+            return _sl.Items.Where(x => x.ItemId == ItemId).SingleOrDefault();
+        }
+
         public void OnGet()
         {
 
         }
 
-        public void OnPostInsert(Brand b)
+        public void OnPostInsert(Brand b, string[] Items)
         {
-            _sl.Brand.Add(new Brand { BrandName = b.BrandName, BrandNotes = b.BrandNotes, BrandWebsite = b.BrandWebsite });
-            _sl.SaveChanges();
+            //Save new Brand...
+            Brand newBrand = new Brand { BrandName = b.BrandName, BrandNotes = b.BrandNotes, BrandWebsite = b.BrandWebsite };
+            _sl.Brand.Add(newBrand);
+            _sl.SaveChanges(); //Need to save to the database now so we get the ID
+
+            //Save each Good or Service the Brand offers...
+            foreach (string item in Items)
+            {
+                _sl.ItemBrand.Add(new ItemBrand { BrandId = newBrand.BrandId, ItemId = Convert.ToInt32(item) });
+            }
+
+            //Persist to database
+            _sl.SaveChanges(); 
         }
 
         public void OnPostUpdate(Brand b)
