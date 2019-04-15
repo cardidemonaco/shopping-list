@@ -13,6 +13,8 @@ namespace shopping_list.WebApp.Pages.Manage
     {
         private Shopping_listDataContext _sl = new Shopping_listDataContext();
 
+        public IEnumerable<Brand> _brands;
+
         [TempData]
         public string Message { get; set; }
 
@@ -72,6 +74,11 @@ namespace shopping_list.WebApp.Pages.Manage
             var b = _sl.Brand.Find(id);
             _sl.Brand.Remove(b);
             _sl.SaveChanges();
+        }
+
+        public void OnPostBrandDetails(IEnumerable<Brand> brands)
+        {
+            _brands = brands;
         }
     }
 }
