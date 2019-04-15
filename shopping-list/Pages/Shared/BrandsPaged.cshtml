@@ -1,14 +1,18 @@
 ﻿@* Partial View *@
 
-@model IEnumerable<shopping_list.DataLayer.Brand>
+@model PagedResult<shopping_list.DataLayer.Brand>
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
 @using shopping_list.DataLayer;
+@using DotNetPaging;
 
 @functions{
+
+    //Properties...
     Shopping_listDataContext _sl = new Shopping_listDataContext();
+
     public IQueryable<ItemBrand> GetItemBrands(int BrandId)
     {
         return _sl.ItemBrand.Where(x => x.BrandId == BrandId);
@@ -20,7 +24,7 @@
 }
 
 @if (Model != null)
-    {
+{
     <form method="post">
         <table cellpadding="4" cellspacing="4">
             <tr>
@@ -31,7 +35,7 @@
                 <th>Offers</th>
                 <th>Website</th>
             </tr>
-            @foreach (var b in Model)
+            @foreach (var b in Model.Results)
             {
                 <tr>
                     <td style="text-align: center;">
@@ -55,5 +59,10 @@
                 </tr>
             }
         </table>
+
+        Page @(@Model.PageCount < Model.CurrentPage ? 0 : Model.CurrentPage) of @Model.PageCount
+
+        @(await Component.InvokeAsync<shopping_list.WebApp.Components.PagerViewComponent>(Model))
+
     </form>
 }

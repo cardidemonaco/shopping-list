@@ -16,7 +16,7 @@
             <td><input asp-for="Item.ItemDescription" /></td>
         </tr>
         <tr>
-            <td colspan="2"><button type="submit" asp-page-handler="update" asp-route-id="@Model.Item.ItemId">Update Good or Service</button></td>
+            <td colspan="2"><button type="submit" asp-page="./Index" asp-page-handler="update" asp-route-id="@Model.Item.ItemId">Update Good or Service</button></td>
         </tr>
     </table>
 </form>

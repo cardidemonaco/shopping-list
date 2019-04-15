@@ -6,12 +6,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
     <PackageReference Include="PagedList.Mvc" Version="4.5.0" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.6.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DotNetPaging.Infrastructure\DotNetPaging.Infrastructure.csproj" />
     <ProjectReference Include="..\shopping-list.DataLayer\shopping-list.DataLayer.csproj" />
   </ItemGroup>
 

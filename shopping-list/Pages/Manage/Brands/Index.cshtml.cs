@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using shopping_list.DataLayer;
+using PagedList;
+using DotNetPaging;
 
 namespace shopping_list.WebApp.Pages.Manage
 {
@@ -13,7 +15,7 @@ namespace shopping_list.WebApp.Pages.Manage
     {
         private Shopping_listDataContext _sl = new Shopping_listDataContext();
 
-        public IEnumerable<Brand> _brands;
+        public PagedResult<Brand> _brandsPaged;
 
         [TempData]
         public string Message { get; set; }
@@ -21,9 +23,11 @@ namespace shopping_list.WebApp.Pages.Manage
         [TempData]
         public bool Success { get; set; }
 
-        public IQueryable<Brand> GetBrands()
+        public PagedResult<Brand> GetBrands(int page = 1)
         {
-            return _sl.Brand;
+            _brandsPaged = _sl.Brand.OrderBy(x => x.BrandName).GetPaged(page, 10);
+
+            return _brandsPaged;
         }
 
         public IQueryable<Item> GetItems()
@@ -76,9 +80,9 @@ namespace shopping_list.WebApp.Pages.Manage
             _sl.SaveChanges();
         }
 
-        public void OnPostBrandDetails(IEnumerable<Brand> brands)
+        public void OnPostBrandDetails(PagedResult<Brand> brandsPaged)
         {
-            _brands = brands;
+            _brandsPaged = brandsPaged;
         }
     }
 }

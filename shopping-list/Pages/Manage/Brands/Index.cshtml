@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "page/{id?}"
 @model shopping_list.WebApp.Pages.Manage.BrandsModel
 @{
     ViewData["Title"] = "Brands";
@@ -6,7 +6,6 @@
 }
 
 @using shopping_list.DataLayer;
-@using PagedList.Mvc;
 
 <h2>@ViewData["Title"]</h2>
 
@@ -16,13 +15,21 @@
     <p style="color: @fontColor;">@Model.Message</p>
 }
 
-<form method="post" asp-page-handler="BrandDetails">
-    <div>
-        @{
-            Html.RenderPartial("Shared/BrandsPaged", Model.GetBrands());
+<div>
+    @{
+        int page;
+        if (RouteData.Values["id"] != null)
+        {
+            page = Convert.ToInt32(RouteData.Values["id"].ToString());
         }
-    </div>
-</form>
+        else
+        {
+            page = 1;
+        }
+
+        Html.RenderPartial("Shared/BrandsPaged", Model.GetBrands(page));
+    }
+</div>
 
 <br />
 
