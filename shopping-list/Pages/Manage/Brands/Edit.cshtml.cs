@@ -23,6 +23,9 @@ namespace shopping_list.WebApp.Pages.Manage
         [TempData]
         public bool Success { get; set; }
 
+        [TempData]
+        public int CurrentPage { get; set; }
+
         public IQueryable<Brand> GetBrands()
         {
             return _sl.Brand;
@@ -48,13 +51,21 @@ namespace shopping_list.WebApp.Pages.Manage
 
         }
 
-        public void OnPostEdit(int id)
+        public void OnPostEdit(int id, int thePage)
         {
+            SetPage(thePage); //set the current page
             Brand = _sl.Brand.Find(id);
         }
 
-        public IActionResult OnPostUpdate(int id, string[] Items)
+        public void SetPage(int page)
         {
+            CurrentPage = page;
+        }
+
+        public IActionResult OnPostUpdate(int id, string[] Items, int thePage)
+        {
+            SetPage(thePage); //set the current page
+
             try
             {
                 Brand.BrandId = id; //Set the primary key
@@ -83,7 +94,11 @@ namespace shopping_list.WebApp.Pages.Manage
                 Success = false;
             }
 
-            return RedirectToPage("./Brands");
+            //return RedirectToPage("./Index", "defaultPaged", thePage);
+            //return RedirectToAction("defaultPagedBrands");
+
+            RouteData.Values["id"] = thePage; //set current page
+            return RedirectToPage("./Index");
         }
     }
 }

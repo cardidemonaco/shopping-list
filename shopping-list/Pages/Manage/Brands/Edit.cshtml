@@ -38,6 +38,7 @@
         </tr>
         <tr>
             <td colspan="2">
+                <input type="hidden" name="thePage" value="@Model.CurrentPage" />
                 <button type="submit" asp-page-handler="update" asp-route-id="@Model.Brand.BrandId">Update Brand</button>
             </td>
         </tr>

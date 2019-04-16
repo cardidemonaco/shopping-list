@@ -1,6 +1,7 @@
 ﻿@model DotNetPaging.PagedResultBase
 @{
     var urlTemplate = Model.LinkTemplate;
+    urlTemplate = urlTemplate.Replace("%2F", "/");
     var request = ViewContext.HttpContext.Request;
     foreach (var key in request.Query.Keys)
     {
