@@ -11,6 +11,7 @@ namespace shopping_list.DataLayer
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int InitiativeID { get; set; }
+        [Required]
         [Display(Name = "Initiative Name")]
         public string InitiativeName { get; set; }
         public string InitiativeDescription { get; set; }
