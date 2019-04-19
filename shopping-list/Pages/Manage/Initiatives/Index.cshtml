@@ -15,8 +15,7 @@
     <div>
         <p>
             Find by name: <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-            <input type="submit" value="Search" />
-            <a asp-page="./Index">Back to full list</a>
+            <input type="submit" value="Search" class="btn btn-default" /> | <a asp-page="./Index">Back to full list</a>
         </p>
     </div>
 </form>
@@ -45,7 +44,6 @@
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@i.InitiativeID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@i.InitiativeID">Details</a> |
                 <a asp-page="./Delete" asp-route-id="@i.InitiativeID">Delete</a>
             </td>
         </tr>
@@ -57,15 +55,19 @@
     var nextDisabled = !Model.Initiatives.HasNextPage ? "disabled" : "";
 }
 
+<br />
+
 <a asp-page="./Index"
    asp-route-sortOrder="@Model.CurrentSort"
    asp-route-pageIndex="@(Model.Initiatives.PageIndex - 1)"
-   asp-route-currentFilter="@Model.CurrentFilter">
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @prevDisabled">
     Previous
 </a>
 <a asp-page="./Index"
    asp-route-sortOrder="@Model.CurrentSort"
    asp-route-pageIndex="@(Model.Initiatives.PageIndex + 1)"
-   asp-route-currentFilter="@Model.CurrentFilter">
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @nextDisabled">
     Next
 </a>

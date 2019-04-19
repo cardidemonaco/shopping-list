@@ -1,0 +1,27 @@
+﻿@page
+@model shopping_list.WebApp.Pages.Manage.Initiatives.DeleteModel
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<p>@Model.ErrorMessage</p>
+
+<h3>Are you sure you want to delete this?</h3>
+
+<div>
+    <h4>Initiative</h4>
+    <hr />
+    <ul>
+        <li><b>@Html.DisplayNameFor(x => x.Initiative.InitiativeName)</b>: @Html.DisplayFor(x => x.Initiative.InitiativeName)</li>
+        <li><b>@Html.DisplayNameFor(x => x.Initiative.InitiativeDescription)</b>: @Html.DisplayFor(x => x.Initiative.InitiativeDescription)</li>
+    </ul>
+
+    <form method="post">
+        <input type="hidden" asp-for="Initiative.InitiativeID" />
+        <input type="submit" value="Delete" />
+        <a asp-page="./Index">Back to list</a>
+    </form>
+</div>

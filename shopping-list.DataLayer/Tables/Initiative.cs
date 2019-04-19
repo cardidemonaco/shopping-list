@@ -12,8 +12,9 @@ namespace shopping_list.DataLayer
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int InitiativeID { get; set; }
         [Required]
-        [Display(Name = "Initiative Name")]
+        [Display(Name = "Name")]
         public string InitiativeName { get; set; }
+        [Display(Name = "Description")]
         public string InitiativeDescription { get; set; }
     }
 }

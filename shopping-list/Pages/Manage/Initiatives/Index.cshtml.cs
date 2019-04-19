@@ -53,7 +53,7 @@ namespace shopping_list.WebApp.Pages.Manage.Initiatives
                     break;
             }
 
-            int pageSize = 3; //Set page size
+            int pageSize = 5; //Set page size
             Initiatives = await PaginatedList<Initiative>.CreateAsync(
                 initiatives.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
