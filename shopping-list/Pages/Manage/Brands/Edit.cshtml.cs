@@ -17,13 +17,13 @@ namespace shopping_list.WebApp.Pages.Manage
         [BindProperty]
         public Brand Brand { get; set; }
 
-        [TempData]
+        [ViewData]
         public string Message { get; set; }
 
-        [TempData]
+        [ViewData]
         public bool Success { get; set; }
 
-        [TempData]
+        [ViewData]
         public int CurrentPage { get; set; }
 
         public IQueryable<Brand> GetBrands()
@@ -53,19 +53,12 @@ namespace shopping_list.WebApp.Pages.Manage
 
         public void OnPostEdit(int id, int thePage)
         {
-            SetPage(thePage); //set the current page
+            CurrentPage = thePage; //set the current page
             Brand = _sl.Brand.Find(id);
-        }
-
-        public void SetPage(int page)
-        {
-            CurrentPage = page;
         }
 
         public IActionResult OnPostUpdate(int id, string[] Items, int thePage)
         {
-            SetPage(thePage); //set the current page
-
             try
             {
                 Brand.BrandId = id; //Set the primary key
@@ -93,9 +86,6 @@ namespace shopping_list.WebApp.Pages.Manage
                 Message = "Good or Service update not successful"; //Alert the user
                 Success = false;
             }
-
-            //return RedirectToPage("./Index", "defaultPaged", thePage);
-            //return RedirectToAction("defaultPagedBrands");
 
             RouteData.Values["id"] = thePage; //set current page
             return RedirectToPage("./Index");

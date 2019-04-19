@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using shopping_list.DataLayer;
-using PagedList;
 using DotNetPaging;
 
 namespace shopping_list.WebApp.Pages.Manage
@@ -23,9 +22,15 @@ namespace shopping_list.WebApp.Pages.Manage
         [TempData]
         public bool Success { get; set; }
 
+        [TempData]
+        public int CurrentPage { get; set; }
+
         public PagedResult<Brand> GetBrands(int page = 1)
         {
-            _brandsPaged = _sl.Brand.OrderBy(x => x.BrandName).GetPaged(page, 10);
+            if (TempData["SortOrderAsc"].ToString() == "True")
+                _brandsPaged = _sl.Brand.OrderBy(x => x.BrandName).GetPaged(page, 10);
+            else
+                _brandsPaged = _sl.Brand.OrderByDescending(x => x.BrandName).GetPaged(page, 10);
 
             return _brandsPaged;
         }
@@ -35,19 +40,44 @@ namespace shopping_list.WebApp.Pages.Manage
             return _sl.Items;
         }
 
-        public IQueryable<ItemBrand> GetItemBrands(int BrandId)
-        {
-            return _sl.ItemBrand.Where(x => x.BrandId == BrandId);
-        }
-
         public Item GetItem(int ItemId)
         {
             return _sl.Items.Where(x => x.ItemId == ItemId).SingleOrDefault();
         }
 
-        public void OnGet()
+        public void OnGet(string sortOrder)
         {
+            switch (sortOrder)
+            {
+                case "BrandName":
+                    break;
+                case "BrandName_desc":
+                    break;
+            }
 
+
+            //Set defaults...
+            if (TempData["PostBack"] == null)
+            {
+                TempData["SortColumn"] = "BrandName";
+                TempData["SortOrderAsc"] = true;
+            }     
+
+            //if (sortOrder)
+            //{
+            //    case "name_desc":
+            //        students = students.OrderByDescending(s => s.LastName);
+            //        break;
+            //    case "Date":
+            //        students = students.OrderBy(s => s.EnrollmentDate);
+            //        break;
+            //    case "date_desc":
+            //        students = students.OrderByDescending(s => s.EnrollmentDate);
+            //        break;
+            //    default:
+            //        students = students.OrderBy(s => s.LastName);
+            //        break;
+            //}
         }
 
         public void OnPostInsert(Brand b, string[] Items)
@@ -73,16 +103,34 @@ namespace shopping_list.WebApp.Pages.Manage
             _sl.SaveChanges();
         }
 
-        public void OnPostDelete(int id)
+        public void OnPostDelete(int id, int thePage)
         {
             var b = _sl.Brand.Find(id);
             _sl.Brand.Remove(b);
             _sl.SaveChanges();
+
+            RouteData.Values["id"] = thePage; //set current page
         }
 
         public void OnPostBrandDetails(PagedResult<Brand> brandsPaged)
         {
             _brandsPaged = brandsPaged;
+        }
+
+        public void OnGetSwitchSortOrder()
+        {
+
+        }
+
+        public void OnPostSwitchSortOrder(bool foo)
+        {
+            if (TempData["SortOrderAsc"] == null)
+                TempData["SortOrderAsc"] = true;
+
+            if (TempData["SortOrderAsc"].ToString() == "True")
+                TempData["SortOrderAsc"] = false;
+            else
+                TempData["SortOrderAsc"] = true;
         }
     }
 }

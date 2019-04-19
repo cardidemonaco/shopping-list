@@ -75,7 +75,9 @@ namespace shopping_list
                 //Brands
                 routes.MapRoute(
                     name: "defaultPagedBrands",
-                    template: "Manage/Brands/{action=Index}/page/{page}");
+                    template: "Manage/Brands/{action=Index}/page/{page}/{SortOrderAsc}");
+
+                
             });
         }
     }

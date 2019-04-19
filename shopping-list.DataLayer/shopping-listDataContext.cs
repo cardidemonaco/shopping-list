@@ -19,7 +19,7 @@ namespace shopping_list.DataLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\v11.0;Initial Catalog=shopping-list;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\ProjectsV13;Initial Catalog=shopping-list;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         }
 
         protected override void OnModelCreating(ModelBuilder mb)
@@ -54,6 +54,7 @@ namespace shopping_list.DataLayer
 
         public virtual DbSet<Brand> Brand { get; set; }
         public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<Initiative> Initiatives { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<ItemBrand> ItemBrand { get; set; }
         public virtual DbSet<ItemCategory> ItemCategory { get; set; }

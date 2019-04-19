@@ -1,0 +1,65 @@
+﻿@page
+@model shopping_list.WebApp.Pages.Manage.Initiatives.IndexModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>Manage Initiatives</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<form asp-page="./Index" method="get">
+    <div>
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" />
+            <a asp-page="./Index">Back to full list</a>
+        </p>
+    </div>
+</form>
+
+<table>
+    <tr>
+        <th>
+            <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
+               asp-route-currentFilter="@Model.CurrentFilter">
+                @Html.DisplayNameFor(x => x.Initiatives[0].InitiativeName)
+            </a>
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var i in Model.Initiatives)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(x => i.InitiativeName)
+            </td>
+            <th>
+                <a asp-page="./Edit" asp-route-id="@i.InitiativeID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@i.InitiativeID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@i.InitiativeID">Delete</a>
+            </th>
+        </tr>
+    }
+</table>
+
+@{
+    var prevDisabled = !Model.Initiatives.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Initiatives.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Initiatives.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Initiatives.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter">
+    Next
+</a>

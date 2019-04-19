@@ -13,9 +13,15 @@
     //Properties...
     Shopping_listDataContext _sl = new Shopping_listDataContext();
 
+    public string SortColumn(string ColumnName)
+    {
+        TempData["SortColumn"] = ColumnName;
+        return ColumnName;
+    }
+
     public IQueryable<ItemBrand> GetItemBrands(int BrandId)
     {
-        return _sl.ItemBrand.Where(x => x.BrandId == BrandId);
+        return _sl.ItemBrand.Where(x => x.BrandId == BrandId).OrderBy(x => x.Brand.BrandName);
     }
     public Item GetItem(int ItemId)
     {
@@ -30,7 +36,9 @@
             <tr>
                 <th>Delete?</th>
                 <th>Edit?</th>
-                <th>Brand Name</th>
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="BrandName">Brand Name</a>
+                </th>
                 <th>Description</th>
                 <th>Offers</th>
                 <th>Website</th>
@@ -62,7 +70,7 @@
         </table>
 
         Page @(@Model.PageCount < Model.CurrentPage ? 0 : Model.CurrentPage) of @Model.PageCount
-
+        
         @(await Component.InvokeAsync<shopping_list.WebApp.Components.PagerViewComponent>(Model))
 
     </form>
