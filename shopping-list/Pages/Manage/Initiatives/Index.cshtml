@@ -29,6 +29,9 @@
                 @Html.DisplayNameFor(x => x.Initiatives[0].InitiativeName)
             </a>
         </th>
+        <th>
+            @Html.DisplayNameFor(x => x.Initiatives[0].InitiativeDescription)
+        </th>
         <th></th>
     </tr>
     @foreach (var i in Model.Initiatives)
@@ -37,11 +40,14 @@
             <td>
                 @Html.DisplayFor(x => i.InitiativeName)
             </td>
-            <th>
+            <td>
+                @Html.DisplayFor(x => i.InitiativeDescription)
+            </td>
+            <td>
                 <a asp-page="./Edit" asp-route-id="@i.InitiativeID">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@i.InitiativeID">Details</a> |
                 <a asp-page="./Delete" asp-route-id="@i.InitiativeID">Delete</a>
-            </th>
+            </td>
         </tr>
     }
 </table>
