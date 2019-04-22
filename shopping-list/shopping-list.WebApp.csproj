@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DotNetPaging.Infrastructure\DotNetPaging.Infrastructure.csproj" />
     <ProjectReference Include="..\shopping-list.DataLayer\shopping-list.DataLayer.csproj" />
   </ItemGroup>
 

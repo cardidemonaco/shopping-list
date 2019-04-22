@@ -1,0 +1,40 @@
+﻿@page
+@model shopping_list.WebApp.Pages.Manage.Brands.CreateModel
+@{
+    ViewData["Title"] = "Create Brand";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<hr />
+
+<div>
+    <div>
+        <form method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="form-group">
+                <label asp-for="Brand.BrandName"></label>
+                <input asp-for="Brand.BrandName" />
+                <span asp-validation-for="Brand.BrandName"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Brand.BrandNotes" ></label>
+                <textarea rows="5" asp-for="Brand.BrandNotes" style="vertical-align: top;"></textarea>
+                <span asp-validation-for="Brand.BrandNotes"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Brand.BrandWebsite"></label>
+                <input asp-for="Brand.BrandWebsite" />
+                <span asp-validation-for="Brand.BrandWebsite"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default"/> | <a asp-page="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

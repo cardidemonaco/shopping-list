@@ -1,76 +1,87 @@
-﻿@page "page/{id?}"
-@model shopping_list.WebApp.Pages.Manage.BrandsModel
+﻿@page
+@model shopping_list.WebApp.Pages.Manage.Brands.IndexModel
 @{
-    ViewData["Title"] = "Brands";
+    ViewData["Title"] = "Manage Brands";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-@using shopping_list.DataLayer;
+<table>
+    <tr>
+        <td><h2>@ViewData["Title"]</h2></td>
+        <td><a asp-page="Create" class="btn btn-default" style="margin-left: 10px;">Create New</a></td>
+    </tr>
+</table>
 
-<h2>@ViewData["Title"]</h2>
+<form asp-page="./Index" method="get">
+    <div>
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-default" /> | <a asp-page="./Index">Back to full list</a>
+        </p>
+    </div>
+</form>
 
-@if (Model.Message != "")
-{
-    string fontColor = @Model.Success ? "green" : "red";
-    <p style="color: @fontColor;">@Model.Message</p>
-}
-
-<div>
-    @{
-        int page;
-
-        //TO-DO: Need to find where this code goes. It seems I have sorting right now and maybe asp-page-handler or something needs to be used?
-        //          Still a little confused by how routing works...
-
-        if (RouteData.Values["id"] != null)
-        {
-            page = Convert.ToInt32(RouteData.Values["id"].ToString());
-        }
-        else
-        {
-            page = 1;
-        }
-
-        Html.RenderPartial("Shared/BrandsPaged", Model.GetBrands(page));
-        //Html.RenderPartial("Shared/BrandsPaged", Model.GetBrands(page), new ViewDataDictionary(this.ViewData));
+<table class="Grid">
+    <tr>
+        <th style="width: 15%;">
+            <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
+               asp-route-currentFilter="@Model.CurrentFilter">
+                @Html.DisplayNameFor(x => x.Brands[0].BrandName)
+            </a>
+        </th>
+        <th style="width: 40%;">
+            @Html.DisplayNameFor(x => x.Brands[0].BrandNotes)
+        </th>
+        <th style="width: 15%;">@Html.DisplayNameFor(x => x.Brands[0].BrandWebsite)</th>
+        <th style="width: 15%;">Offers</th>
+        <th></th>
+    </tr>
+    @foreach (var b in Model.Brands)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(x => b.BrandName)
+            </td>
+            <td>
+                @Html.DisplayFor(x => b.BrandNotes)
+            </td>
+            <td>
+                <a target="_blank" href="@b.BrandWebsite">@Html.DisplayFor(x => b.BrandWebsite)</a>
+            </td>
+            <td>
+                <ul>
+                    @foreach (shopping_list.DataLayer.Item i in Model.GetItems(b.BrandId).OrderBy(x => x.ItemName))
+                    {
+                        <li>@i.ItemName</li>
+                    }
+                </ul>
+            </td>
+            <td style="text-align: center;">
+                <a asp-page="./Edit" asp-route-id="@b.BrandId">Edit</a> |
+                <a asp-page="./Delete" asp-route-id="@b.BrandId">Delete</a>
+            </td>
+        </tr>
     }
-</div>
+</table>
+
+@{
+    var prevDisabled = !Model.Brands.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Brands.HasNextPage ? "disabled" : "";
+}
 
 <br />
 
-<form method="post" asp-page-handler="Insert">
-    <table>
-        <tr>
-            <th colspan="2">New Brand</th>
-        </tr>
-        <tr>
-            <td>Name</td>
-            <td><input type="text" name="BrandName" /></td>
-        </tr>
-        <tr>
-            <td>Notes</td>
-            <td><textarea name="BrandNotes" rows="5"></textarea></td>
-        </tr>
-        <tr>
-            <td>Website</td>
-            <td><input type="text" name="BrandWebsite" /></td>
-        </tr>
-        <tr>
-            <td>Offers</td>
-            <td>
-                <select name="Items" multiple size="10">
-                    @foreach (Item i in Model.GetItems().OrderBy(x => x.ItemName))
-                    {
-                        <option name="ItemId" value="@i.ItemId">@i.ItemName</option>
-                    }
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="hidden" name="thePage" value="@Model.CurrentPage" />
-                <input type="submit" value="Submit New Brand" />
-            </td>
-        </tr>
-    </table>
-</form>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Brands.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Brands.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

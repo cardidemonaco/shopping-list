@@ -37,11 +37,13 @@ body {
     }
 }
 
-table 
+table.Grid
 {
     border: 1px solid black;
+    width: 100%;
 }
-table tr th, table tr td {
+table.Grid tr th, table.Grid tr td 
+{
     border: 1px solid black;
     padding: 4px;
 }

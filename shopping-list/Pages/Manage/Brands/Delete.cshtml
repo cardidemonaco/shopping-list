@@ -1,0 +1,34 @@
+﻿@page
+@model shopping_list.WebApp.Pages.Manage.Brands.DeleteModel
+@{
+    ViewData["Title"] = "Delete Brand";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>@Model.ErrorMessage</p>
+
+<h3>Are you sure you want to delete this?</h3>
+
+<div>
+    <ul>
+        <li><b>@Html.DisplayNameFor(x => x.Brand.BrandName)</b>: @Html.DisplayFor(x => x.Brand.BrandName)</li>
+        <li><b>@Html.DisplayNameFor(x => x.Brand.BrandNotes)</b>: @Html.DisplayFor(x => x.Brand.BrandNotes)</li>
+        <li><b>@Html.DisplayNameFor(x => x.Brand.BrandWebsite)</b>: @Html.DisplayFor(x => x.Brand.BrandWebsite)</li>
+        <li><b>Offers</b>
+            <ul>
+                @foreach (shopping_list.DataLayer.Item i in Model.GetItems(Model.Brand.BrandId).OrderBy(x => x.ItemName))
+                {
+                    <li>@i.ItemName</li>
+                }
+            </ul>
+        </li>
+    </ul>
+
+    <form method="post">
+        <input type="hidden" asp-for="Brand.BrandId" />
+        <input type="submit" value="Delete" class="btn btn-default" />
+        <a asp-page="./Index">Back to list</a>
+    </form>
+</div>

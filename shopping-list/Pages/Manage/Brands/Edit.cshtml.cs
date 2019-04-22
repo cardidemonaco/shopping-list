@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using shopping_list.DataLayer;
 
-namespace shopping_list.WebApp.Pages.Manage
+namespace shopping_list.WebApp.Pages.Manage.Brand
 {
-    public class BrandEditModel : PageModel
+    public class EditModel : PageModel
     {
         private Shopping_listDataContext _sl = new Shopping_listDataContext();
 
         [BindProperty]
-        public Brand Brand { get; set; }
+        public DataLayer.Brand Brand { get; set; }
 
         [ViewData]
         public string Message { get; set; }
@@ -23,60 +22,58 @@ namespace shopping_list.WebApp.Pages.Manage
         [ViewData]
         public bool Success { get; set; }
 
-        [ViewData]
-        public int CurrentPage { get; set; }
-
-        public IQueryable<Brand> GetBrands()
-        {
-            return _sl.Brand;
-        }
-
         public IQueryable<Item> GetItems()
         {
             return _sl.Items;
         }
 
-        public IQueryable<ItemBrand> GetItemBrands(int BrandId)
+        public IQueryable<Item> GetItems(int BrandID)
         {
-            return _sl.ItemBrand.Where(x => x.BrandId == BrandId);
+            return _sl.Items.Join(_sl.ItemBrand, i => i.ItemId, ib => ib.ItemId, (i, ib) => new { i, ib })
+                                 .Where(x => x.ib.BrandId == BrandID)
+                                 .Select(x => x.i);
         }
 
-        public Item GetItem(int ItemId)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            return _sl.Items.Where(x => x.ItemId == ItemId).SingleOrDefault();
+            if (id == null)
+                return NotFound();
+
+            Brand = await _sl.Brand.FindAsync(id);
+
+            if (Brand == null)
+                return NotFound();
+
+            return Page();
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnPostAsync(int id, string[] Items)
         {
+            if (!ModelState.IsValid)
+                return Page();
 
-        }
-
-        public void OnPostEdit(int id, int thePage)
-        {
-            CurrentPage = thePage; //set the current page
-            Brand = _sl.Brand.Find(id);
-        }
-
-        public IActionResult OnPostUpdate(int id, string[] Items, int thePage)
-        {
             try
             {
-                Brand.BrandId = id; //Set the primary key
-                _sl.Brand.Update(Brand); //The rest of the new values are automatically bound
-                _sl.SaveChanges(); //Update the database
+                var brandToUpdate = await _sl.Brand.FindAsync(id);
+
+                brandToUpdate.BrandName = Brand.BrandName;
+                brandToUpdate.BrandNotes = Brand.BrandNotes;
+                brandToUpdate.BrandWebsite = Brand.BrandWebsite;
+
+                _sl.Brand.Update(brandToUpdate); //The rest of the new values are automatically bound
 
                 //Delete all items first, and then just below add them again...
-                _sl.ItemBrand.RemoveRange(_sl.ItemBrand.Where(x => x.BrandId == Brand.BrandId));
+                _sl.ItemBrand.RemoveRange(_sl.ItemBrand.Where(x => x.BrandId == brandToUpdate.BrandId));
 
                 //Save each Good or Service the Brand offers...
                 foreach (string item in Items)
                 {
                     //Check first if the item exists, and if not add, it...
-                    _sl.ItemBrand.Add(new ItemBrand { BrandId = Brand.BrandId, ItemId = Convert.ToInt32(item) });
+                    _sl.ItemBrand.Add(new ItemBrand { BrandId = brandToUpdate.BrandId, ItemId = Convert.ToInt32(item) });
                 }
 
                 //Persist to database
-                _sl.SaveChanges();
+                await _sl.SaveChangesAsync();
 
                 Message = "Good or Service update successful"; //Alert the user
                 Success = true;
@@ -87,7 +84,6 @@ namespace shopping_list.WebApp.Pages.Manage
                 Success = false;
             }
 
-            RouteData.Values["id"] = thePage; //set current page
             return RedirectToPage("./Index");
         }
     }
